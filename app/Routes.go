@@ -1,13 +1,11 @@
 package app
 
 import (
-	"go-learning-restapi/controller"
-
 	"github.com/gin-gonic/gin"
+	"go-learning-restapi/controller"
 )
 
-
-func Routes(controlerProduct *controller.ProductContrller) {
+func Routes(controlerProduct *controller.ProductController) {
 	r := gin.Default()
 	r.GET("/products", controlerProduct.FindAll)
 	r.Run()

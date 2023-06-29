@@ -1,27 +1,7 @@
 package controller
 
-import (
-	"go-learning-restapi/services"
+import "github.com/gin-gonic/gin"
 
-	"github.com/gin-gonic/gin"
-)
-
-type ProductContrller struct {
-	productService services.ProductService
-}
-
-
-func NewProductController(productService services.ProductService) *ProductContrller{
-			return &ProductContrller{
-				productService: productService,
-			}
-}
-
-func (p *ProductContrller,) FindAll(c *gin.Context) {	
-	get, err := p.productService.ViewProduct()
-	if err != nil{
-		c.AbortWithError(500,err)
-	}
-	c.AbortWithStatusJSON(200,get)
-	
+type ProductController interface {
+	FindAll(ctx *gin.Context)
 }
