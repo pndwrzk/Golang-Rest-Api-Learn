@@ -3,7 +3,9 @@ package controllerImpl
 import (
 	"github.com/gin-gonic/gin"
 	"go-learning-restapi/controller"
+	"go-learning-restapi/dto"
 	"go-learning-restapi/services"
+	"net/http"
 )
 
 type ProductControllerImpl struct {
@@ -18,9 +20,13 @@ func NewProductController(productService services.ProductService) controller.Pro
 
 func (p ProductControllerImpl) FindAll(ctx *gin.Context) {
 	get, err := p.ProductService.ViewProduct()
-	if err != nil {
-		ctx.AbortWithStatusJSON(400, err)
-	}
 
-	ctx.JSON(200, get)
+	if err != nil {
+		resError := dto.WebResponeError(http.StatusInternalServerError, "Error", err.Error())
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+	resSuccess := dto.WebResponeSuccess(http.StatusOK, "OK", get)
+	ctx.JSON(resSuccess.Code, resSuccess)
+	return
 }
