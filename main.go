@@ -8,18 +8,11 @@ import (
 )
 
 func main() {
-	// r := gin.Default()
-	// r.GET("/ping", func(c *gin.Context) {
-	// 	c.JSON(200, gin.H{
-	// 		"message": "pong",
-	// 	})
-	// })
-	// r.Run()
 
 	db := app.DBConnect()
 	productRepository := repoimpl.NewProductRepository(db)
 	productServices := servicesimpl.NewProductService(productRepository)
-	productControler := controllerImpl.NewProductController(productServices)
-	app.Routes(productControler)
+	productController := controllerImpl.NewProductController(productServices)
+	app.Routes(productController)
 
 }

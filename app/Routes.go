@@ -5,8 +5,12 @@ import (
 	"go-learning-restapi/controller"
 )
 
-func Routes(controlerProduct *controller.ProductController) {
-	r := gin.Default()
-	r.GET("/products", controlerProduct.FindAll)
-	r.Run()
+func Routes(controllerProduct controller.ProductController) {
+
+	route := gin.Default()
+	api := route.Group("/api")
+
+	//route product
+	api.GET("/products", controllerProduct.FindAll)
+	route.Run()
 }
