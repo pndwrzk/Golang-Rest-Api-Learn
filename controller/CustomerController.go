@@ -2,6 +2,6 @@ package controller
 
 import "github.com/gin-gonic/gin"
 
-type ProductController interface {
+type CustomerController interface {
 	FindAll(ctx *gin.Context) 
 }

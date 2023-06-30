@@ -7,17 +7,17 @@ import (
 )
 
 type ProductRepositoryImpl struct {
-	productRepo repositories.ProductRepository
+	ProductRepository repositories.ProductRepository
 }
 
 func NewProductService(productRepo repositories.ProductRepository) services.ProductService {
 	return &ProductRepositoryImpl{
-		productRepo: productRepo,
+		ProductRepository: productRepo,
 	}
 }
 
 func (r *ProductRepositoryImpl) ViewProduct() ([]entities.Product, error) {
-	get, err := r.productRepo.View()
+	get, err := r.ProductRepository.View()
 
 	if err != nil {
 		return nil, err

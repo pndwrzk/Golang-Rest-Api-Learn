@@ -10,9 +10,17 @@ import (
 func main() {
 
 	db := app.DBConnect()
+
+	// product
 	productRepository := repoimpl.NewProductRepository(db)
 	productServices := servicesimpl.NewProductService(productRepository)
 	productController := controllerImpl.NewProductController(productServices)
-	app.Routes(productController)
+
+
+	// customer
+	customerRepository := repoimpl.NewCustomerRepository(db)
+	customerService := servicesimpl.NewCustomerService(customerRepository)
+	customerController := controllerImpl.NewCustomerController(customerService)
+	app.Routes(productController,customerController)
 
 }

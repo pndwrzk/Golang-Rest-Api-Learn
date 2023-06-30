@@ -1,16 +1,17 @@
 package app
 
 import (
-	"github.com/gin-gonic/gin"
 	"go-learning-restapi/controller"
+
+	"github.com/gin-gonic/gin"
 )
 
-func Routes(controllerProduct controller.ProductController) {
+func Routes(controllerProduct controller.ProductController, controllerCustomer controller.CustomerController) {
 
 	route := gin.Default()
 	api := route.Group("/api")
 
-	//route product
 	api.GET("/products", controllerProduct.FindAll)
+	api.GET("/customers", controllerCustomer.FindAll)
 	route.Run()
 }
