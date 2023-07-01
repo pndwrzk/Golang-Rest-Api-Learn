@@ -25,3 +25,8 @@ func (r *ProductRepositoryImpl) ViewProduct() ([]entities.Product, error) {
 
 	return get, nil
 }
+
+func (r *ProductRepositoryImpl) CreateProduct(product entities.Product) (entities.Product, error) {
+	get, err := r.ProductRepository.Create(product)
+	return get, err
+}

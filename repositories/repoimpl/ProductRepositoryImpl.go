@@ -41,3 +41,9 @@ func (r *ProductRepositoryImpl) View() ([]entities.Product, error) {
 	return products, nil
 
 }
+
+func (r *ProductRepositoryImpl) Create(product entities.Product) (entities.Product, error) {
+	err := r.DB.Create(&product).Error
+	return product, err
+
+}
