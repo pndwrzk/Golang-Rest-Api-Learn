@@ -16,8 +16,8 @@ func NewProductService(productRepo repositories.ProductRepository) services.Prod
 	}
 }
 
-func (r *ProductRepositoryImpl) ViewProduct() ([]entities.Product, error) {
-	get, err := r.ProductRepository.View()
+func (r *ProductRepositoryImpl) ReadProduct() ([]entities.Product, error) {
+	get, err := r.ProductRepository.Read()
 
 	if err != nil {
 		return nil, err

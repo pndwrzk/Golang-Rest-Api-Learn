@@ -12,7 +12,8 @@ func Routes(controllerProduct controller.ProductController, controllerCustomer c
 	api := route.Group("/api")
 
 	api.GET("/products", controllerProduct.FindAll)
-	api.POST("/products", controllerProduct.Create)
+	api.POST("/products", controllerProduct.Insert)
 	api.GET("/customers", controllerCustomer.FindAll)
+	api.POST("/customers", controllerCustomer.Insert)
 	route.Run()
 }

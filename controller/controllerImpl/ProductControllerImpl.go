@@ -22,19 +22,19 @@ func NewProductController(productService services.ProductService) controller.Pro
 }
 
 func (p *ProductControllerImpl) FindAll(ctx *gin.Context) {
-	get, err := p.ProductService.ViewProduct()
+	get, err := p.ProductService.ReadProduct()
 
 	if err != nil {
 		resError := dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, err.Error())
 		ctx.JSON(resError.Code, resError)
 		return
 	}
-	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessStatus, get, message.ErrorMessageSucces)
+	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessGetData, get, message.ErrorMessageSucces)
 	ctx.JSON(resSuccess.Code, resSuccess)
 	return
 }
 
-func (p *ProductControllerImpl) Create(ctx *gin.Context) {
+func (p *ProductControllerImpl) Insert(ctx *gin.Context) {
 	var bodyRequest entities.Product
 	err := ctx.ShouldBindJSON(&bodyRequest)
 	if err != nil {

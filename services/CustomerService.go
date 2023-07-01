@@ -3,5 +3,6 @@ package services
 import "go-learning-restapi/entities"
 
 type CustomerService interface {
-	ViewCustomer() ([]entities.Customer, error)
+	ReadCustomer() ([]entities.Customer, error)
+	CreateCustomer(customer entities.Customer) (entities.Customer, error)
 }

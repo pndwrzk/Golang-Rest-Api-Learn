@@ -11,21 +11,25 @@ type CustomerRepositoryImpl struct {
 	DB *gorm.DB
 }
 
-
-func NewCustomerRepository(db *gorm.DB) repositories.CustomerRepository{
-return &CustomerRepositoryImpl{
-	DB: db,
+func NewCustomerRepository(db *gorm.DB) repositories.CustomerRepository {
+	return &CustomerRepositoryImpl{
+		DB: db,
+	}
 }
+
+func (c *CustomerRepositoryImpl) Read() ([]entities.Customer, error) {
+
+	var customers []entities.Customer
+	err := c.DB.Find(&customers).Error
+	if err != nil {
+		return nil, err
+	}
+	return customers, nil
+
 }
 
+func (c *CustomerRepositoryImpl) Create(customer entities.Customer) (entities.Customer, error) {
 
-func (c *CustomerRepositoryImpl) View()([]entities.Customer, error){
-		
-		var customers []entities.Customer
-		err := c.DB.Find(&customers).Error
-			if err != nil{
-				return nil,err
-			}
-		return customers, nil
-
+	err := c.DB.Create(&customer).Error
+	return customer, err
 }

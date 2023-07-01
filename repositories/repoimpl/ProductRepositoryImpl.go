@@ -17,7 +17,7 @@ func NewProductRepository(db *gorm.DB) repositories.ProductRepository {
 	}
 }
 
-func (r *ProductRepositoryImpl) View() ([]entities.Product, error) {
+func (r *ProductRepositoryImpl) Read() ([]entities.Product, error) {
 	row, err := r.DB.Raw("Select * From products").Rows()
 	if err != nil {
 		return nil, err
