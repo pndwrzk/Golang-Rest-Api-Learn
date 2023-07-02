@@ -53,7 +53,7 @@ func (c *CustomerControllerImpl) Insert(ctx *gin.Context) {
 	}
 
 	if get.ID != 0 {
-		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, "Email Must Unique")
+		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, message.ErrorEmailRegistered(get.Email))
 		ctx.JSON(resError.Code, resError)
 		return
 	}
