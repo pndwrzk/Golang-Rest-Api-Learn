@@ -95,7 +95,38 @@ func (c *CustomerControllerImpl) FindById(ctx *gin.Context) {
 		return
 
 	}
-	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessInsertData, res, message.ErrorMessageSucces)
+	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessGetData, res, message.ErrorMessageSucces)
+	ctx.JSON(resSuccess.Code, resSuccess)
+	return
+
+}
+
+func (c *CustomerControllerImpl) UpdateById(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		resError := dto.WebRespone(http.StatusBadRequest, message.ErrorStatus, nil, message.ErrorIdNotValid)
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+
+	var bodyRequest entities.Customer
+	err = ctx.ShouldBindJSON(&bodyRequest)
+	if err != nil {
+		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+
+	res, err := c.CustomerService.UpdateCustomerById(idInt, bodyRequest)
+	if err != nil {
+		resError := dto.WebRespone(http.StatusBadRequest, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+
+	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessUpdateDate, res, message.ErrorMessageSucces)
 	ctx.JSON(resSuccess.Code, resSuccess)
 	return
 

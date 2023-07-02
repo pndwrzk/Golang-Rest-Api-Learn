@@ -47,3 +47,16 @@ func (c *CustomerRepositoryImpl) ReadById(id int) (entities.Customer, error) {
 	return customer, err
 
 }
+
+func (c *CustomerRepositoryImpl) UpdateById(id uint, bodyRequest entities.Customer) (interface{}, error) {
+	bodyRequest.ID = id
+
+	err := c.DB.Save(&bodyRequest).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return bodyRequest, nil
+
+}

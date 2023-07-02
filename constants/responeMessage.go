@@ -4,10 +4,11 @@ const (
 	ErrorStatus        = "Error"
 	SuccessStatus      = "Success"
 	ErrorMessageSucces = ""
-	SuccessInsertData  = "Success Insert Data"
+	SuccessInsertData  = "Success insert data"
+	SuccessUpdateDate  = "Success update data"
 	SuccessGetData     = "success retrieve data"
-	ErrorIdNotValid    = "ID not Valid"
-	ErrorDataNotFound  = "Data Not Found"
+	ErrorIdNotValid    = "ID not valid"
+	ErrorDataNotFound  = "Data not found"
 )
 
 func ErrorEmailRegistered(email string) string {
