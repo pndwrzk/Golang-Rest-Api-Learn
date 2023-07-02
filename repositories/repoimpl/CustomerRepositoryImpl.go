@@ -29,7 +29,13 @@ func (c *CustomerRepositoryImpl) Read() ([]entities.Customer, error) {
 }
 
 func (c *CustomerRepositoryImpl) Create(customer entities.Customer) (entities.Customer, error) {
-
 	err := c.DB.Create(&customer).Error
+	return customer, err
+}
+
+func (c *CustomerRepositoryImpl) ReadByEmail(email string) (entities.Customer, error) {
+	var customer entities.Customer
+	err := c.DB.First(&customer, "email = ?", email).Error
+
 	return customer, err
 }

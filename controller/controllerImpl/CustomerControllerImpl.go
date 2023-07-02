@@ -44,6 +44,20 @@ func (c *CustomerControllerImpl) Insert(ctx *gin.Context) {
 		return
 	}
 
+	//check customer by email
+	get, err := c.CustomerService.ReadCustomerByEmail(bodyRequest.Email)
+	if err != nil && err.Error() != "record not found" {
+		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+
+	if get.ID != 0 {
+		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, "Email Must Unique")
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+
 	get, errr := c.CustomerService.CreateCustomer(bodyRequest)
 	if errr != nil {
 		resError := dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, errr.Error())
