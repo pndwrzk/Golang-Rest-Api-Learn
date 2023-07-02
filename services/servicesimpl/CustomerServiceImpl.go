@@ -34,3 +34,8 @@ func (c *CustomerServiceImpl) ReadCustomerByEmail(email string) (entities.Custom
 	get, err := c.CustomerRepository.ReadByEmail(email)
 	return get, err
 }
+
+func (c *CustomerServiceImpl) ReadCustomerById(id int) (entities.Customer, error) {
+	get, err := c.CustomerRepository.ReadById(id)
+	return get, err
+}

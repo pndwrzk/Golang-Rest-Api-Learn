@@ -14,6 +14,7 @@ func Routes(controllerProduct controller.ProductController, controllerCustomer c
 	api.GET("/products", controllerProduct.FindAll)
 	api.POST("/products", controllerProduct.Insert)
 	api.GET("/customers", controllerCustomer.FindAll)
+	api.GET("/customers/:id", controllerCustomer.FindById)
 	api.POST("/customers", controllerCustomer.Insert)
 	route.Run()
 }

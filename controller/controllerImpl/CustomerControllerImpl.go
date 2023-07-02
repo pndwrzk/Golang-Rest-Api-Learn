@@ -7,6 +7,7 @@ import (
 	"go-learning-restapi/entities"
 	"go-learning-restapi/services"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -68,4 +69,34 @@ func (c *CustomerControllerImpl) Insert(ctx *gin.Context) {
 	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessInsertData, get, message.ErrorMessageSucces)
 	ctx.JSON(resSuccess.Code, resSuccess)
 	return
+}
+
+func (c *CustomerControllerImpl) FindById(ctx *gin.Context) {
+	id := ctx.Param("id")
+	idInt, err := strconv.Atoi(id)
+
+	if err != nil {
+		resError := dto.WebRespone(http.StatusBadRequest, message.ErrorStatus, nil, message.ErrorIdNotValid)
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+
+	res, err := c.CustomerService.ReadCustomerById(idInt)
+
+	if err != nil && err.Error() != "record not found" {
+		resError := dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+
+	if res.ID == 0 {
+		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, message.ErrorDataNotFound)
+		ctx.JSON(resError.Code, resError)
+		return
+
+	}
+	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessInsertData, res, message.ErrorMessageSucces)
+	ctx.JSON(resSuccess.Code, resSuccess)
+	return
+
 }

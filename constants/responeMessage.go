@@ -6,6 +6,8 @@ const (
 	ErrorMessageSucces = ""
 	SuccessInsertData  = "Success Insert Data"
 	SuccessGetData     = "success retrieve data"
+	ErrorIdNotValid    = "ID not Valid"
+	ErrorDataNotFound  = "Data Not Found"
 )
 
 func ErrorEmailRegistered(email string) string {

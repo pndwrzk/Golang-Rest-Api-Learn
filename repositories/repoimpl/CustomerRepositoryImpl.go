@@ -39,3 +39,11 @@ func (c *CustomerRepositoryImpl) ReadByEmail(email string) (entities.Customer, e
 
 	return customer, err
 }
+
+func (c *CustomerRepositoryImpl) ReadById(id int) (entities.Customer, error) {
+	var customer entities.Customer
+	err := c.DB.First(&customer, "customer_id", id).Error
+
+	return customer, err
+
+}
