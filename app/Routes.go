@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Routes(controllerProduct controller.ProductController, controllerCustomer controller.CustomerController) {
+func Routes(controllerProduct controller.ProductController, controllerCustomer controller.CustomerController, controllerUser controller.UserController) {
 
 	route := gin.Default()
 	api := route.Group("/api")
@@ -20,6 +20,9 @@ func Routes(controllerProduct controller.ProductController, controllerCustomer c
 	api.GET("/customers/:id", controllerCustomer.FindById)
 	api.POST("/customers", controllerCustomer.Insert)
 	api.PUT("/customers/:id", controllerCustomer.UpdateById)
+
+	// router Customer 
+	api.GET("/registrasi", controllerUser.Registrasi)
 
 	route.Run()
 }
