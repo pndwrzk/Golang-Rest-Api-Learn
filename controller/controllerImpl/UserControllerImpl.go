@@ -47,3 +47,24 @@ func (u *UserControllerImpl) Registrasi(ctx *gin.Context){
 	ctx.JSON(resSuccess.Code, resSuccess)
 	return
 }
+
+func( u *UserControllerImpl)Login(ctx *gin.Context){
+	 var bodyRequest entities.RequestLogin
+  		err := ctx.ShouldBindJSON(&bodyRequest)
+ 		 if err != nil {
+		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+
+	get, err := u.UserService.Login(bodyRequest)
+	if err != nil {
+		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessGetData, get, message.ErrorMessageSucces)
+	ctx.JSON(resSuccess.Code, resSuccess)
+	return
+
+}

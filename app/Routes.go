@@ -23,6 +23,6 @@ func Routes(controllerProduct controller.ProductController, controllerCustomer c
 
 	// router Customer 
 	api.GET("/registrasi", controllerUser.Registrasi)
-
+api.GET("/login", controllerUser.Login)
 	route.Run()
 }

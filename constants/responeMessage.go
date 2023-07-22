@@ -9,6 +9,7 @@ const (
 	SuccessGetData     = "success retrieve data"
 	ErrorIdNotValid    = "ID not valid"
 	ErrorDataNotFound  = "Data not found"
+	ErrorFailedLogin = "Email Or Password Wrong"
 )
 
 func ErrorEmailRegistered(email string) string {
