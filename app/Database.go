@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/go-redis/redis/v8"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -25,4 +26,19 @@ func DBConnect() *gorm.DB {
 	}
 	db.AutoMigrate(&entities.Product{}, &entities.Customer{}, &entities.User{})
 	return db
+}
+
+
+func RedisConnect()  *redis.Client{
+	redisHost := os.Getenv("REDIS_HOST")
+	redisPort := os.Getenv("REDIS_PORT")
+	redisPassword := os.Getenv("REDIS_PASSWORD")
+client := redis.NewClient(&redis.Options{
+		Addr: fmt.Sprintf("%s:%s",redisHost,redisPort),
+		Password: redisPassword,
+		DB: 0,
+	})
+
+
+return client
 }
