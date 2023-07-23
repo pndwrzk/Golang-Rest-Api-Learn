@@ -3,6 +3,7 @@ package servicesimpl
 import (
 	"errors"
 	"go-learning-restapi/constants"
+	"go-learning-restapi/dto"
 	"go-learning-restapi/entities"
 	"go-learning-restapi/repositories"
 	"go-learning-restapi/services"
@@ -18,8 +19,8 @@ func NewCustomerService(customerService repositories.CustomerRepository) service
 	}
 }
 
-func (c *CustomerServiceImpl) ReadCustomer() ([]entities.Customer, error) {
-	get, err := c.CustomerRepository.Read()
+func (c *CustomerServiceImpl) ReadCustomer(pagination dto.ResultPaginate) ([]entities.Customer, error) {
+	get, err := c.CustomerRepository.Read(pagination)
 	if err != nil {
 		return nil, err
 	}

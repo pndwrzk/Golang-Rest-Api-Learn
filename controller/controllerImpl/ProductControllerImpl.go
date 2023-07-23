@@ -22,6 +22,8 @@ func NewProductController(productService services.ProductService) controller.Pro
 }
 
 func (p *ProductControllerImpl) FindAll(ctx *gin.Context) {
+
+
 	get, err := p.ProductService.ReadProduct()
 
 	if err != nil {

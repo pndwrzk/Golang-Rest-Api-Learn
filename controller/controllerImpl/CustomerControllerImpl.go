@@ -6,6 +6,7 @@ import (
 	"go-learning-restapi/dto"
 	"go-learning-restapi/entities"
 	"go-learning-restapi/services"
+	"go-learning-restapi/utils"
 	"net/http"
 	"strconv"
 
@@ -23,14 +24,16 @@ func NewCustomerController(customerService services.CustomerService) controller.
 }
 
 func (c *CustomerControllerImpl) FindAll(ctx *gin.Context) {
-	get, err := c.CustomerService.ReadCustomer()
+	pagination,pagging := utils.GeneratePagination(ctx)
+	get, err := c.CustomerService.ReadCustomer(pagination)
+
 	if err != nil {
 		resError := dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, err.Error())
 		ctx.JSON(resError.Code, resError)
 		return
 	}
 
-	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessGetData, get, message.ErrorMessageSucces)
+	resSuccess := dto.WebResponeGetAll(http.StatusOK, message.SuccessGetData, get,pagging, message.ErrorMessageSucces)
 	ctx.JSON(resSuccess.Code, resSuccess)
 	return
 

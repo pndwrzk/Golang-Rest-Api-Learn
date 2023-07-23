@@ -1,6 +1,7 @@
 package repoimpl
 
 import (
+	"go-learning-restapi/dto"
 	"go-learning-restapi/entities"
 	"go-learning-restapi/repositories"
 
@@ -17,10 +18,10 @@ func NewCustomerRepository(db *gorm.DB) repositories.CustomerRepository {
 	}
 }
 
-func (c *CustomerRepositoryImpl) Read() ([]entities.Customer, error) {
+func (c *CustomerRepositoryImpl) Read(pagination dto.ResultPaginate) ([]entities.Customer, error) {
 
 	var customers []entities.Customer
-	err := c.DB.Find(&customers).Error
+	err := c.DB.Order(pagination.Order).Offset(pagination.Offset).Limit(pagination.Limit).Find(&customers).Error
 	if err != nil {
 		return nil, err
 	}
