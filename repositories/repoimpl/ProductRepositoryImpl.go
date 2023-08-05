@@ -9,11 +9,13 @@ import (
 
 type ProductRepositoryImpl struct {
 	DB *gorm.DB
+	
 }
 
 func NewProductRepository(db *gorm.DB) repositories.ProductRepository {
 	return &ProductRepositoryImpl{
 		DB: db,
+		
 	}
 }
 

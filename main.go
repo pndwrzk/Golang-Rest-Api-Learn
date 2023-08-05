@@ -1,8 +1,6 @@
 package main
 
 import (
-	"context"
-	"fmt"
 	"go-learning-restapi/app"
 	"go-learning-restapi/controller/controllerImpl"
 	"go-learning-restapi/repositories/repoimpl"
@@ -21,19 +19,18 @@ func main() {
 
 	db := app.DBConnect()
 	rdb :=app.RedisConnect()
-	key:= "key-123"
-	 // get data
-    op2 := rdb.Get(context.Background(),key)
-    if err := op2.Err(); err != nil {
-        fmt.Printf("unable to GET data. error: %v", err)
-        return
-    }
-    res, err := op2.Result()
-    if err != nil {
-        fmt.Printf("unable to GET data. error: %v", err)
-        return
-    }
-    log.Println("get operation success. result:", res)
+	// key:= "key-1234"
+	//  // get data
+    // op2 := rdb.Get(context.Background(),key)
+    // if err := op2.Err(); err != nil {
+    //    panic(err.Error())
+    // }
+    // res, err := op2.Result()
+    // if err != nil {
+    //     fmt.Printf("unable to GET data. error: %v", err)
+    //     return
+    // }
+    // log.Println("get operation success. result:", res)
 
 	// product
 	productRepository := repoimpl.NewProductRepository(db)
@@ -41,7 +38,7 @@ func main() {
 	productController := controllerImpl.NewProductController(productServices)
 
 	// customer
-	customerRepository := repoimpl.NewCustomerRepository(db)
+	customerRepository := repoimpl.NewCustomerRepository(db,rdb)
 	customerService := servicesimpl.NewCustomerService(customerRepository)
 	customerController := controllerImpl.NewCustomerController(customerService)
 

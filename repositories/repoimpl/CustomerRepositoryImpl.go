@@ -1,20 +1,27 @@
 package repoimpl
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
 	"go-learning-restapi/dto"
 	"go-learning-restapi/entities"
 	"go-learning-restapi/repositories"
+	"time"
 
+	"github.com/go-redis/redis/v8"
 	"gorm.io/gorm"
 )
 
 type CustomerRepositoryImpl struct {
 	DB *gorm.DB
+	RDB *redis.Client
 }
 
-func NewCustomerRepository(db *gorm.DB) repositories.CustomerRepository {
+func NewCustomerRepository(db *gorm.DB, rdb *redis.Client) repositories.CustomerRepository {
 	return &CustomerRepositoryImpl{
 		DB: db,
+		RDB: rdb,
 	}
 }
 
@@ -42,8 +49,20 @@ func (c *CustomerRepositoryImpl) ReadByEmail(email string) (entities.Customer, e
 }
 
 func (c *CustomerRepositoryImpl) ReadById(id int) (entities.Customer, error) {
-	var customer entities.Customer
-	err := c.DB.First(&customer, "customer_id", id).Error
+var customer entities.Customer
+	keyRedis := fmt.Sprintf("customer_id_%d",id)
+	res ,err := c.RDB.Get(context.Background(),keyRedis).Result()
+	if err != nil {
+		err = c.DB.First(&customer, "customer_id", id).Error
+		if customer.ID !=0{
+			out,_:= json.Marshal(customer)
+			// 1 hour
+			ttl := time.Duration(1) * time.Hour
+			err = c.RDB.Set(context.Background(), keyRedis, out, ttl).Err()
+		}
+		return customer, err
+	}
+	err = json.Unmarshal([]byte(res), &customer)
 
 	return customer, err
 
