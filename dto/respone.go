@@ -22,14 +22,14 @@ type ResultPaginate struct {
 }
 
 func WebRespone(code int, status string, data interface{}, errorMessage string) Respone {
-	respone := Respone{
-		Code:         code,
-		Status:       status,
-		Data:         data,
-		ErrorMessage: errorMessage,
-	}
 
-	return respone
+	var res Respone
+	res.Code = code
+	res.Status = status
+	res.Data = data
+	res.ErrorMessage = errorMessage
+
+	return res
 }
 
 func WebResponeGetAll(code int, status string, data interface{}, meta interface{}, errorMessage string) ResponeGetAll {

@@ -24,17 +24,19 @@ func NewCustomerController(customerService services.CustomerService) controller.
 }
 
 func (c *CustomerControllerImpl) FindAll(ctx *gin.Context) {
+	var respone dto.Respone
+	var responeGetAll dto.ResponeGetAll
 	pagination,pagging := utils.GeneratePagination(ctx)
 	get, err := c.CustomerService.ReadCustomer(pagination)
 
 	if err != nil {
-		resError := dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, err.Error())
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
-	resSuccess := dto.WebResponeGetAll(http.StatusOK, message.SuccessGetData, get,pagging, message.ErrorMessageSucces)
-	ctx.JSON(resSuccess.Code, resSuccess)
+	responeGetAll = dto.WebResponeGetAll(http.StatusOK, message.SuccessGetData, get,pagging, message.ErrorMessageSucces)
+	ctx.JSON(responeGetAll.Code, responeGetAll)
 	return
 
 }
@@ -76,30 +78,32 @@ func (c *CustomerControllerImpl) Insert(ctx *gin.Context) {
 
 func (c *CustomerControllerImpl) FindById(ctx *gin.Context) {
 	id := ctx.Param("id")
+	var respone dto.Respone
 	idInt, err := strconv.Atoi(id)
 
+
 	if err != nil {
-		resError := dto.WebRespone(http.StatusBadRequest, message.ErrorStatus, nil, message.ErrorIdNotValid)
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusBadRequest, message.ErrorStatus, nil, message.ErrorIdNotValid)
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
 	res, err := c.CustomerService.ReadCustomerById(idInt)
 
 	if err != nil && err.Error() != "record not found" {
-		resError := dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, err.Error())
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
 	if res.ID == 0 {
-		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, message.ErrorDataNotFound)
-		ctx.JSON(resError.Code, resError)
+		 respone = dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, message.ErrorDataNotFound)
+		ctx.JSON(respone.Code, respone)
 		return
-
 	}
-	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessGetData, res, message.ErrorMessageSucces)
-	ctx.JSON(resSuccess.Code, resSuccess)
+
+	respone = dto.WebRespone(http.StatusOK, message.SuccessGetData, res, message.ErrorMessageSucces)
+	ctx.JSON(respone.Code, respone)
 	return
 
 }
@@ -107,30 +111,32 @@ func (c *CustomerControllerImpl) FindById(ctx *gin.Context) {
 func (c *CustomerControllerImpl) UpdateById(ctx *gin.Context) {
 	id := ctx.Param("id")
 
+	var respone dto.Respone
+
 	idInt, err := strconv.Atoi(id)
 	if err != nil {
-		resError := dto.WebRespone(http.StatusBadRequest, message.ErrorStatus, nil, message.ErrorIdNotValid)
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusBadRequest, message.ErrorStatus, nil, message.ErrorIdNotValid)
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
 	var bodyRequest entities.Customer
 	err = ctx.ShouldBindJSON(&bodyRequest)
 	if err != nil {
-		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
 	res, err := c.CustomerService.UpdateCustomerById(idInt, bodyRequest)
 	if err != nil {
-		resError := dto.WebRespone(http.StatusBadRequest, message.ErrorStatus, nil, err.Error())
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusBadRequest, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
-	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessUpdateDate, res, message.ErrorMessageSucces)
-	ctx.JSON(resSuccess.Code, resSuccess)
+	respone = dto.WebRespone(http.StatusOK, message.SuccessUpdateDate, res, message.ErrorMessageSucces)
+	ctx.JSON(respone.Code, respone)
 	return
 
 }

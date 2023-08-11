@@ -16,7 +16,7 @@ type Paginate struct {
 }
 
 func GeneratePagination(ctx *gin.Context)(dto.ResultPaginate, Paginate){
-	Pagging := Paginate{}
+	var Pagging  Paginate
 	perPage := ctx.Query("limit")
 	orderBy := ctx.Query("order_by")
 	orderDir:= ctx.Query("order_dir")

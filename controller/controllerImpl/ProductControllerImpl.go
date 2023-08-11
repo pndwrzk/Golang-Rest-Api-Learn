@@ -23,37 +23,38 @@ func NewProductController(productService services.ProductService) controller.Pro
 
 func (p *ProductControllerImpl) FindAll(ctx *gin.Context) {
 
-
+	var respone dto.Respone
 	get, err := p.ProductService.ReadProduct()
 
 	if err != nil {
-		resError := dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, err.Error())
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(respone.Code, respone)
 		return
 	}
-	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessGetData, get, message.ErrorMessageSucces)
-	ctx.JSON(resSuccess.Code, resSuccess)
+	respone = dto.WebRespone(http.StatusOK, message.SuccessGetData, get, message.ErrorMessageSucces)
+	ctx.JSON(respone.Code, respone)
 	return
 }
 
 func (p *ProductControllerImpl) Insert(ctx *gin.Context) {
 	var bodyRequest entities.Product
+	var respone dto.Respone
 	err := ctx.ShouldBindJSON(&bodyRequest)
 	if err != nil {
-		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
 	get, errr := p.ProductService.CreateProduct(bodyRequest)
 	if errr != nil {
-		resError := dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, errr.Error())
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, errr.Error())
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
-	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessInsertData, get, message.ErrorMessageSucces)
-	ctx.JSON(resSuccess.Code, resSuccess)
+	respone = dto.WebRespone(http.StatusOK, message.SuccessInsertData, get, message.ErrorMessageSucces)
+	ctx.JSON(respone.Code, respone)
 	return
 
 }
