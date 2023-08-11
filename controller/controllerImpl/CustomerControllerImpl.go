@@ -27,7 +27,7 @@ func (c *CustomerControllerImpl) FindAll(ctx *gin.Context) {
 	var respone dto.Respone
 	var responeGetAll dto.ResponeGetAll
 	pagination,pagging := utils.GeneratePagination(ctx)
-	get, err := c.CustomerService.ReadCustomer(pagination)
+	get,totalData, err := c.CustomerService.ReadCustomer(pagination)
 
 	if err != nil {
 		respone = dto.WebRespone(http.StatusInternalServerError, message.ErrorStatus, nil, err.Error())
@@ -35,7 +35,7 @@ func (c *CustomerControllerImpl) FindAll(ctx *gin.Context) {
 		return
 	}
 
-	responeGetAll = dto.WebResponeGetAll(http.StatusOK, message.SuccessGetData, get,pagging, message.ErrorMessageSucces)
+	responeGetAll = dto.WebResponeGetAll(http.StatusOK, message.SuccessGetData, get,totalData,pagging, message.ErrorMessageSucces)
 	ctx.JSON(responeGetAll.Code, responeGetAll)
 	return
 

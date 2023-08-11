@@ -19,13 +19,13 @@ func NewCustomerService(customerService repositories.CustomerRepository) service
 	}
 }
 
-func (c *CustomerServiceImpl) ReadCustomer(pagination dto.ResultPaginate) ([]entities.Customer, error) {
-	get, err := c.CustomerRepository.Read(pagination)
+func (c *CustomerServiceImpl) ReadCustomer(pagination dto.ResultPaginate) ([]entities.Customer, int64,error) {
+	get,totalData, err := c.CustomerRepository.Read(pagination)
 	if err != nil {
-		return nil, err
+		return nil, totalData,err
 	}
 
-	return get, nil
+	return get, totalData,nil
 }
 
 func (c *CustomerServiceImpl) CreateCustomer(customer entities.Customer) (entities.Customer, error) {

@@ -6,7 +6,7 @@ import (
 )
 
 type CustomerRepository interface {
-	Read(pagination dto.ResultPaginate) ([]entities.Customer, error)
+	Read(pagination dto.ResultPaginate) ([]entities.Customer, int64,error)
 	Create(customer entities.Customer) (entities.Customer, error)
 	ReadByEmail(email string) (entities.Customer, error)
 	ReadById(id int) (entities.Customer, error)

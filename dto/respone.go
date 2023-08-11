@@ -11,6 +11,7 @@ type ResponeGetAll struct {
 	Code         int         `json:"code"`
 	Status       string      `json:"status"`
 	Data         interface{} `json:"data"`
+	TotalData    int64       `json:"total_data"`
 	Meta         interface{} `json:"meta"`
 	ErrorMessage string      `json:"error_message"`
 }
@@ -19,6 +20,7 @@ type ResultPaginate struct {
 	Limit  int
 	Offset int
 	Order  string
+	Search string
 }
 
 func WebRespone(code int, status string, data interface{}, errorMessage string) Respone {
@@ -32,11 +34,12 @@ func WebRespone(code int, status string, data interface{}, errorMessage string) 
 	return res
 }
 
-func WebResponeGetAll(code int, status string, data interface{}, meta interface{}, errorMessage string) ResponeGetAll {
+func WebResponeGetAll(code int, status string, data interface{}, totalData int64, meta interface{}, errorMessage string) ResponeGetAll {
 	respone := ResponeGetAll{
 		Code:         code,
 		Status:       status,
 		Data:         data,
+		TotalData:    totalData,
 		Meta:         meta,
 		ErrorMessage: errorMessage,
 	}

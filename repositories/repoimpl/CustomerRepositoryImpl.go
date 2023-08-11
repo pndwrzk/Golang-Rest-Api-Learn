@@ -25,14 +25,18 @@ func NewCustomerRepository(db *gorm.DB, rdb *redis.Client) repositories.Customer
 	}
 }
 
-func (c *CustomerRepositoryImpl) Read(pagination dto.ResultPaginate) ([]entities.Customer, error) {
+func (c *CustomerRepositoryImpl) Read(pagination dto.ResultPaginate) ([]entities.Customer,int64, error) {
 
 	var customers []entities.Customer
-	err := c.DB.Order(pagination.Order).Offset(pagination.Offset).Limit(pagination.Limit).Find(&customers).Error
+	
+	// err := c.DB.Order(pagination.Order).Offset(pagination.Offset).Limit(pagination.Limit).Find(&customers).Error
+   var count int64
+   count=0
+	err:= c.DB.Table("customers").Order(pagination.Order).Offset(pagination.Offset).Limit(pagination.Limit).Find(&customers).Count(&count).Error
 	if err != nil {
-		return nil, err
+		return nil, 0,err
 	}
-	return customers, nil
+	return customers, count,nil
 
 }
 

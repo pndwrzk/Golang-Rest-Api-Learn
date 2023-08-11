@@ -6,7 +6,7 @@ import (
 )
 
 type CustomerService interface {
-	ReadCustomer(pagination dto.ResultPaginate) ([]entities.Customer, error)
+	ReadCustomer(pagination dto.ResultPaginate) ([]entities.Customer, int64,error)
 	CreateCustomer(customer entities.Customer) (entities.Customer, error)
 	ReadCustomerByEmail(email string) (entities.Customer, error)
 	ReadCustomerById(id int) (entities.Customer, error)
