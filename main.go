@@ -10,27 +10,20 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func main() {
-
+func init(){
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file",err.Error())
 	}
+}
+
+func main() {
+
+	
 
 	db := app.DBConnect()
 	rdb :=app.RedisConnect()
-	// key:= "key-1234"
-	//  // get data
-    // op2 := rdb.Get(context.Background(),key)
-    // if err := op2.Err(); err != nil {
-    //    panic(err.Error())
-    // }
-    // res, err := op2.Result()
-    // if err != nil {
-    //     fmt.Printf("unable to GET data. error: %v", err)
-    //     return
-    // }
-    // log.Println("get operation success. result:", res)
+	
 
 	// product
 	productRepository := repoimpl.NewProductRepository(db)

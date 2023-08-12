@@ -16,6 +16,13 @@ type ResponeGetAll struct {
 	ErrorMessage string      `json:"error_message"`
 }
 
+type ResponeLogin struct {
+	Code         int    `json:"code"`
+	Status       string `json:"status"`
+	Token        string `json:"token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
 type ResultPaginate struct {
 	Limit  int
 	Offset int

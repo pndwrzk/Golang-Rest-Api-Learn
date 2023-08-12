@@ -6,6 +6,7 @@ import (
 	"go-learning-restapi/dto"
 	"go-learning-restapi/entities"
 	"go-learning-restapi/services"
+	"go-learning-restapi/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -57,14 +58,35 @@ func( u *UserControllerImpl)Login(ctx *gin.Context){
 		return
 	}
 
-	get, err := u.UserService.Login(bodyRequest)
+	_, err = u.UserService.Login(bodyRequest)
 	if err != nil {
 		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
 		ctx.JSON(resError.Code, resError)
 		return
 	}
-	resSuccess := dto.WebRespone(http.StatusOK, message.SuccessGetData, get, message.ErrorMessageSucces)
-	ctx.JSON(resSuccess.Code, resSuccess)
+
+
+	token,err := utils.GenerateToken(bodyRequest.Email)
+	if err != nil {
+		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+	refreshToken,err := utils.GenerateRefreshToken(bodyRequest.Email)
+	if err != nil {
+		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(resError.Code, resError)
+		return
+	}
+
+	responeLogin := dto.ResponeLogin{
+	Code: http.StatusOK,
+	Status: message.SuccessGetData,
+	Token: token,
+	RefreshToken: refreshToken,
+	}
+
+	ctx.JSON(responeLogin.Code, responeLogin)
 	return
 
 }
