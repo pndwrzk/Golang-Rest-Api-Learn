@@ -6,7 +6,6 @@ import (
 	"go-learning-restapi/dto"
 	"go-learning-restapi/entities"
 	"go-learning-restapi/services"
-	"go-learning-restapi/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +13,7 @@ import (
 
 type UserControllerImpl struct {
 	UserService services.UserService
+	respon dto.Respone
 }
 
 func NewUserControllerImpl(UserService services.UserService) controller.UserController{
@@ -51,42 +51,47 @@ func (u *UserControllerImpl) Registrasi(ctx *gin.Context){
 
 func( u *UserControllerImpl)Login(ctx *gin.Context){
 	 var bodyRequest entities.RequestLogin
+	 var respone dto.Respone
   		err := ctx.ShouldBindJSON(&bodyRequest)
  		 if err != nil {
-		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
-		ctx.JSON(resError.Code, resError)
+		 respone= dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
-	_, err = u.UserService.Login(bodyRequest)
+	res, err := u.UserService.Login(bodyRequest)
 	if err != nil {
-		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
+	respone = dto.WebRespone(http.StatusOK, message.SuccessLogin, res, message.ErrorMessageSucces)
+		ctx.JSON(respone.Code, respone)
+		return
 
-	token,err := utils.GenerateToken(bodyRequest.Email)
+}
+
+func (u *UserControllerImpl) RefreshToken(ctx *gin.Context){
+	var bodyRequest entities.RequestRefreshToken
+	 var respone dto.Respone
+  		err := ctx.ShouldBindJSON(&bodyRequest)
+ 		 if err != nil {
+		 respone = dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(respone.Code, respone)
+		return
+	}
+
+	res, err := u.UserService.RefreshToken(bodyRequest.RefreshToken)
 	if err != nil {
-		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
-		ctx.JSON(resError.Code, resError)
-		return
-	}
-	refreshToken,err := utils.GenerateRefreshToken(bodyRequest.Email)
-	if err != nil {
-		resError := dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
-		ctx.JSON(resError.Code, resError)
+		respone = dto.WebRespone(http.StatusNotFound, message.ErrorStatus, nil, err.Error())
+		ctx.JSON(respone.Code, respone)
 		return
 	}
 
-	responeLogin := dto.ResponeLogin{
-	Code: http.StatusOK,
-	Status: message.SuccessGetData,
-	Token: token,
-	RefreshToken: refreshToken,
-	}
+	respone = dto.WebRespone(http.StatusOK, message.SuccessRfreshToken, res, message.ErrorMessageSucces)
+		ctx.JSON(respone.Code, respone)
+		return
 
-	ctx.JSON(responeLogin.Code, responeLogin)
-	return
 
 }

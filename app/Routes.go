@@ -20,6 +20,8 @@ func Routes(controllerProduct controller.ProductController, controllerCustomer c
 
 
 	route.POST("/login", controllerUser.Login)
+	route.POST("/registrasi", controllerUser.Registrasi)
+	route.POST("/refresh-token", controllerUser.RefreshToken)
 	api := route.Group("/api")
 
 	api.Use(middleware.AuthenticateMiddleware())
@@ -35,7 +37,7 @@ func Routes(controllerProduct controller.ProductController, controllerCustomer c
 	api.PUT("/customers/:id", controllerCustomer.UpdateById)
 
 	// router Customer 
-	api.GET("/registrasi", controllerUser.Registrasi)
+	
 
 	route.Run()
 }
